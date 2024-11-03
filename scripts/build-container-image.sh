@@ -5,8 +5,8 @@ set -e
 
 source ./shared.sh
 
-mode=azure
-build_base_image=false
+mode=dev
+build_base_image=true
 
 # Parse the command line arguments
 while [[ $# -gt 0 ]]; do
@@ -35,7 +35,6 @@ done
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-echo "$SCRIPT_DIR/../"
 
 if [ "$build_base_image" = true ]; then
   echo "Building winarena-base image"
@@ -52,5 +51,4 @@ else
 fi
 
 docker build --build-arg DEPLOY_MODE=$mode -f $SCRIPT_DIR/../src/win-arena-container/Dockerfile-WinArena -t $winarena_image_name:latest $SCRIPT_DIR/../
-
 docker tag $winarena_image_name:latest windowsarena/$winarena_image_name:latest

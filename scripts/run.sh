@@ -186,18 +186,15 @@ fi
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Resolve paths
-vm_setup_image_path="$SCRIPT_DIR/../src/win-arena-container/vm/image"
 vm_storage_mount_path="$SCRIPT_DIR/../src/win-arena-container/vm/storage"
 server_mount_path="$SCRIPT_DIR/../src/win-arena-container/vm/setup"
 client_mount_path="$SCRIPT_DIR/../src/win-arena-container/client"
 
 # Solve absolute path
-vm_setup_image_path=$(getrealpath $vm_setup_image_path)
 vm_storage_mount_path=$(getrealpath $vm_storage_mount_path)
 server_mount_path=$(getrealpath $server_mount_path)
 client_mount_path=$(getrealpath $client_mount_path)
 
-echo "Using VM Setup Image path: $vm_setup_image_path"
 echo "Using VM storage mount path: $vm_storage_mount_path"
 echo "Using server mount path: $server_mount_path"
 echo "Using client mount path: $client_mount_path"
@@ -247,7 +244,6 @@ invoke_docker_container() {
     else
         docker_command+=" -e KVM=N"
     fi
-
     # Set the RAM size
     docker_command+=" -e RAM_SIZE=$ram_size"
 
@@ -255,9 +251,9 @@ invoke_docker_container() {
     docker_command+=" -e CPU_CORES=$cpu_cores"
 
     # Mount the setup image
-    if [ "$prepare_image" = true ]; then
-        docker_command+=" --mount type=bind,source=${vm_setup_image_path}/setup.iso,target=/custom.iso"
-    fi
+    # if [ "$prepare_image" = true ]; then
+    #     docker_command+=" --mount type=bind,source=${vm_setup_image_path}/setup.iso,target=/custom.iso"
+    # fi
 
     # Mount the storage for the VM - makes the VM persistent
     if [ "$mount_vm_storage" = true ]; then
